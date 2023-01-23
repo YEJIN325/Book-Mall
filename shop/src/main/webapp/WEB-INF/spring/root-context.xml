@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+		<!--
+		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
+		<property name="jdbcUrl" value="jdbc:mysql://localhost:3306/BBS?serverTimezone=Asia/Seoul"></property>
+		-->
+		<property name="driverClassName" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"></property>
+		<property name="jdbcUrl" value="jdbc:log4jdbc:mysql://localhost:3306/MALL?serverTimezone=Asia/Seoul"></property>
+		<property name="username" value="scott"></property>
+		<property name="password" value="tiger"></property>
+	</bean>
+	
+	<bean id="datasource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+		<constructor-arg ref="hikariConfig"></constructor-arg>
+	</bean>
+	
+	<!-- sqlSession 객체는 connection을 생성하거나 원하는 sql을 전달하고 결과를 리턴받도록 해줌
+	sqlSession을 만들어내는 객체가 SQLSessionFactory -->
+	
+	
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="datasource"></property>
+	</bean>
+	
+	<!-- naver 메일 설정 -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.naver.com"></property>
+		<property name="port" value="465"></property>
+		<property name="username" value="your_email_id"></property>
+		<property name="password" value="your_email_password" />
+		<property name="javaMailProperties">  <!-- SSL 인증 코드 -->
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.ssl.enable">true</prop>
+  				<prop key="mail.smtp.starttls.enable">true</prop>
+  				<prop key="mail.smtps.checkserveridentity">true</prop>
+  				<prop key="mail.smtps.ssl.trust">*</prop>
+  				<prop key="mail.debug">true</prop>
+  				<prop key="mail.smtp.socketFactory.class">javax.net.ssl.SSLSocketFactory</prop>
+  				<prop key="mail.smtp.ssl.protocols">TLSv1.2</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- mybatis가 mapper 패키지를 인식할 수 있도록 mybatis-spring:scan -->
+	<mybatis-spring:scan base-package="com.javalec.mapper" />
+	
+	<!-- 스프링이 model, service 패키지를 인식할 수 있도록 context:component-scan -->
+	<context:component-scan base-package="com.javalec.model"></context:component-scan>
+	<context:component-scan base-package="com.javalec.service"></context:component-scan>
+	
+</beans>
