@@ -107,6 +107,7 @@
  
 <script>
 	$(document).ready(function(){
+		// 등록 성공
 		let eResult = '<c:out value="${enroll_result}"/>';
 		
 		checkResult(eResult);
@@ -117,6 +118,14 @@
 			}
 			alert("상품 '" + eResult + "'을 등록하였습니다.");
 		}
+		
+		// 수정 성공
+		let modify_result = '${modify_result}';
+		
+		if (modify_result == 1){
+			alert("수정 완료");
+		}
+		
 	});
 	
 	let searchForm = $('#searchForm');

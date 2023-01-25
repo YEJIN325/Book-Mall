@@ -22,4 +22,6 @@ public interface AdminMapper {
 	// 상품 조회
 	public BookVO goodsGetDetail(int bookId);
 	
+	// 상품 수정
+	public int goodsModify(BookVO book);
 }
