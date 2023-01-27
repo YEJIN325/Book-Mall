@@ -24,4 +24,8 @@ public interface AdminMapper {
 	
 	// 상품 수정
 	public int goodsModify(BookVO book);
+	
+	// 상품 삭제
+	public int goodsDelete(int bookId);
+	
 }

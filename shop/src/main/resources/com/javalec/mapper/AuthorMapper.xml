@@ -30,4 +30,8 @@
 		<update id="authorModify">
 			update book_author set authorName = #{authorName}, nationId = #{nationId}, authorIntro = #{authorIntro}, updateDate = now() where authorId = #{authorId}
 		</update>
+		
+		<delete id="authorDelete">
+			delete from book_author where authorId = #{authorId}
+		</delete>
 	</mapper>

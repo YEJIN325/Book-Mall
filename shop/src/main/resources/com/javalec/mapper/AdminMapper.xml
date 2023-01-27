@@ -47,4 +47,9 @@
 			where bookId = ${bookId}
 		</update>
 		
+		<!-- 상품 삭제 -->
+		<delete id="goodsDelete">
+			delete from book where bookId = #{bookId}
+		</delete>
+		
 	</mapper>

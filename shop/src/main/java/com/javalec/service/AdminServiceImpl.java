@@ -52,4 +52,11 @@ public class AdminServiceImpl implements AdminService {
 	public int goodsModify(BookVO book) {
 		return adminMapper.goodsModify(book);
 	}
+	
+	// 상품 삭제
+	@Override
+	public int goodsDelete(int bookId) {
+		return adminMapper.goodsDelete(bookId);
+	}
+	
 }
