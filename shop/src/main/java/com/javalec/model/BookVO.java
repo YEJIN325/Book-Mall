@@ -1,6 +1,7 @@
 package com.javalec.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class BookVO {
 	// 상품 ID
@@ -47,6 +48,9 @@ public class BookVO {
 	
 	// 수정 날짜
 	private Date updateDate;
+	
+	// 이미지 정보
+	private List<AttachImageVO> imageList;
 
 	
 	public int getBookId() {
@@ -169,13 +173,21 @@ public class BookVO {
 		this.updateDate = updateDate;
 	}
 
+	public List<AttachImageVO> getImageList() {
+		return imageList;
+	}
+
+	public void setImageList(List<AttachImageVO> imageList) {
+		this.imageList = imageList;
+	}
+
 	@Override
 	public String toString() {
 		return "BookVO [bookId=" + bookId + ", bookName=" + bookName + ", authorId=" + authorId + ", authorName="
 				+ authorName + ", publiYear=" + publiYear + ", publisher=" + publisher + ", cateCode=" + cateCode
 				+ ", cateName=" + cateName + ", bookPrice=" + bookPrice + ", bookStock=" + bookStock + ", bookDiscount="
 				+ bookDiscount + ", bookIntro=" + bookIntro + ", bookContents=" + bookContents + ", regDate=" + regDate
-				+ ", updateDate=" + updateDate + "]";
+				+ ", updateDate=" + updateDate + ", imageList=" + imageList + "]";
 	}
 	
 }
