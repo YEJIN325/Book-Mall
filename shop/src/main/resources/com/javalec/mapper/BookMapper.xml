@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="com.javalec.mapper.BookMapper">
+		
+		<!-- 검색 조건 -->
+		<sql id="criteria">
+			<trim prefix="where (" suffix=")" prefixOverrides="AND">
+				<foreach item="type" collection="typeArr">
+					<trim prefix="AND">
+						<choose>
+							<when test="type == 'A'.toString()">
+								<trim prefixOverrides="or">
+									<foreach collection="authorArr" item="authorId">
+										<trim prefix="or">
+											a.authorId = #{authorId}
+										</trim>
+									</foreach>
+								</trim>
+							</when>
+							<when test="type == 'C'.toString()">
+								a.cateCode like concat('%', #{cateCode}, '%')
+							</when>
+							<when test="type == 'T'.toString()">
+								bookName like concat('%', #{keyword}, '%')
+							</when>
+						</choose>
+					</trim>
+				</foreach>
+			</trim>
+		</sql>
+		
+		<!-- 상품 검색 -->
+		<select id="getGoodsList" resultType="com.javalec.model.BookVO">
+			select bookId, bookName, b.authorName, a.authorId, c.cateName, a.cateCode, publisher, publiYear, bookPrice
+			from book a left outer join book_author b on a.authorId = b.authorId
+			left outer join book_cate c on a.cateCode = c.cateCode
+			<include refid="criteria"></include>
+			order by bookId desc
+			limit #{skip}, #{amount}
+		</select>
+		
+		<!-- 상품 총 갯수 -->
+		<select id="goodsGetTotal" resultType="int">
+			select count(*) from book a
+			<include refid="criteria"></include>
+		</select>
+		
+		<!-- 작가 id 리스트 요청 -->
+		<select id="getAuthorIdList" resultType="String">
+			select authorId from book_author where authorName like concat('%', #{keyword}, '%')
+		</select>
+		
+	</mapper>
