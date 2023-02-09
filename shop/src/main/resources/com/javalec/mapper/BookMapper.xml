@@ -33,7 +33,7 @@
 		
 		<!-- 상품 검색 -->
 		<select id="getGoodsList" resultType="com.javalec.model.BookVO">
-			select bookId, bookName, b.authorName, a.authorId, c.cateName, a.cateCode, publisher, publiYear, bookPrice
+			select bookId, bookName, b.authorName, a.authorId, c.cateName, a.cateCode, publisher, publiYear, bookPrice, bookDiscount
 			from book a left outer join book_author b on a.authorId = b.authorId
 			left outer join book_cate c on a.cateCode = c.cateCode
 			<include refid="criteria"></include>
