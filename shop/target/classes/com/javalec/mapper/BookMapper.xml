@@ -52,4 +52,18 @@
 			select authorId from book_author where authorName like concat('%', #{keyword}, '%')
 		</select>
 		
+		<!-- 국내 카테고리 리스트 -->
+		<select id="getDomCateCode" resultType="com.javalec.model.CateVO">
+			<![CDATA[
+			select * from book_cate where cateCode > 100000 and cateCode < 200000
+			]]>
+		</select>
+		
+		<!-- 외국 카테고리 리스트 -->
+		<select id="getAbCateCode" resultType="com.javalec.model.CateVO">
+			<![CDATA[
+			select * from book_cate where cateCode > 200000 and cateCode < 300000
+			]]>
+		</select>
+		
 	</mapper>

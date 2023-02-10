@@ -40,8 +40,12 @@ public class BookController {
 	
 	// 메인 페이지 이동
 	@RequestMapping(value="/main", method=RequestMethod.GET)
-	public void mainPageGET() {
+	public void mainPageGET(Model model) {
 		logger.info("메인 페이지 진입");
+		
+		model.addAttribute("cate1", bookService.getDomCateCode());
+		model.addAttribute("cate2", bookService.getAbCateCode());
+
 	}
 	
 	// 이미지 출력

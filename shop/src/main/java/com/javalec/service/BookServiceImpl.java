@@ -10,6 +10,7 @@ import com.javalec.mapper.AttachMapper;
 import com.javalec.mapper.BookMapper;
 import com.javalec.model.AttachImageVO;
 import com.javalec.model.BookVO;
+import com.javalec.model.CateVO;
 import com.javalec.model.Criteria;
 
 @Service
@@ -57,4 +58,16 @@ public class BookServiceImpl implements BookService {
 		return bookMapper.goodsGetTotal(cri);
 	}
 
+	// 국내 카테고리 리스트
+	@Override
+	public List<CateVO> getDomCateCode() {
+		return bookMapper.getDomCateCode();
+	}
+	
+	// 외국 카테고리 리스트
+	@Override
+	public List<CateVO> getAbCateCode() {
+		return bookMapper.getAbCateCode();
+	}
+	
 }

@@ -3,6 +3,7 @@ package com.javalec.service;
 import java.util.List;
 
 import com.javalec.model.BookVO;
+import com.javalec.model.CateVO;
 import com.javalec.model.Criteria;
 
 public interface BookService {
@@ -12,5 +13,11 @@ public interface BookService {
 	
 	// 상품 총 갯수
 	public int goodsGetTotal(Criteria cri);
+	
+	// 국내 카테고리 리스트
+	public List<CateVO> getDomCateCode();
+	
+	// 외국 카테고리 리스트
+	public List<CateVO> getAbCateCode();
 	
 }
