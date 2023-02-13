@@ -82,7 +82,8 @@
 		<div class="content_area">
 			<!-- 게시물 O -->
 			<c:if test="${listCheck != 'empty'}">
-				<div class="search_filter">
+				<c:if test="${filterCheck ne 'C'}">
+					<div class="search_filter">
 					<div class="filter_button_wrap">
 						<button class="filter_button filter_active" id="filter_button_dom">국내</button>
 						<button class="filter_button" id="filter_button_ab">외국</button>
@@ -107,6 +108,7 @@
 						<input type="hidden" name="type">
 					</form>
 				</div>
+				</c:if>
 				<div class="list_search_result">
 					<table class="type_list">
 						<colgroup>
@@ -129,7 +131,9 @@
 											[${list.cateName}]
 										</div>
 										<div class="title">
-											${list.bookName}
+											<a href="/goodsDetail/${list.bookId}">
+												${list.bookName}
+											</a>
 										</div>
 										<div class="author">
 											${list.authorName} 지음 | ${list.publisher} | ${list.publiYear}

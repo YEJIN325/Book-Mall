@@ -109,4 +109,12 @@
 				</choose>
 			</foreach>
 		</select>
+		
+		<!-- 상품 정보 -->
+		<select id="getGoodsInfo" resultType="com.javalec.model.BookVO">
+			select a.bookId, a.bookName, a.authorId, b.authorName, a.publiYear, a.publisher, a.cateCode, c.cateName, a.bookPrice, a.bookStock, a.bookDiscount, a.bookIntro, a.bookContents
+			from book a left outer join book_author b on a.authorId = b.authorId
+			left outer join book_cate c on a.cateCode = c.cateCode
+			where bookId = #{bookId}
+		</select>
 	</mapper>
