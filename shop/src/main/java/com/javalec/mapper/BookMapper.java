@@ -3,6 +3,7 @@ package com.javalec.mapper;
 import java.util.List;
 
 import com.javalec.model.BookVO;
+import com.javalec.model.CateFilterVO;
 import com.javalec.model.CateVO;
 import com.javalec.model.Criteria;
 
@@ -22,5 +23,11 @@ public interface BookMapper {
 	
 	// 외국 카테고리 리스트
 	public List<CateVO> getAbCateCode();
+	
+	// 검색 대상 카테고리 리스트
+	public String[] getCateList(Criteria cri);
+	
+	// 카테고리 정보(+검색대상 갯수)
+	public CateFilterVO getCateInfo(Criteria cri);
 	
 }

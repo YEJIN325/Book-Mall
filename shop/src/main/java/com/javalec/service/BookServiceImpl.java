@@ -10,6 +10,7 @@ import com.javalec.mapper.AttachMapper;
 import com.javalec.mapper.BookMapper;
 import com.javalec.model.AttachImageVO;
 import com.javalec.model.BookVO;
+import com.javalec.model.CateFilterVO;
 import com.javalec.model.CateVO;
 import com.javalec.model.Criteria;
 
@@ -68,6 +69,37 @@ public class BookServiceImpl implements BookService {
 	@Override
 	public List<CateVO> getAbCateCode() {
 		return bookMapper.getAbCateCode();
+	}
+	
+	// 검색 결과 카테고리 필터 정보
+	@Override
+	public List<CateFilterVO> getCateInfoList(Criteria cri) {
+		List<CateFilterVO> filterInfoList = new ArrayList<CateFilterVO>();
+		
+		String[] typeArr = cri.getType().split("");
+		String[] authorArr;
+		
+		for (String type: typeArr) {
+			if (type.equals("A")) {
+				authorArr = bookMapper.getAuthorIdList(cri.getKeyword());
+				if (authorArr.length == 0) {
+					return filterInfoList;
+				}
+				cri.setAuthorArr(authorArr);
+			}
+		}
+		
+		String[] cateList = bookMapper.getCateList(cri);
+		String tempCateCode = cri.getCateCode();
+		for (String cateCode : cateList) {
+			cri.setCateCode(cateCode);
+			CateFilterVO filterInfo = bookMapper.getCateInfo(cri);
+			filterInfoList.add(filterInfo);
+		}
+		
+		cri.setCateCode(tempCateCode);
+		
+		return filterInfoList;
 	}
 	
 }

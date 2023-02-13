@@ -51,7 +51,7 @@ public class BookMapperTests {
 	}
 	*/
 	
-	
+	/*
 	// 검색 (동적 쿼리 적용) - 작가
 	@Test
 	public void getGoodsListTest1() {
@@ -72,7 +72,7 @@ public class BookMapperTests {
 		System.out.println("list : " + list);
 		
 	}
-	
+	*/
 	
 	/*
 	// 검색 (동적 쿼리 적용) - 책 제목
@@ -165,4 +165,42 @@ public class BookMapperTests {
 			
 	}
 	*/
+	
+	/*
+	// 카테고리 리스트
+	@Test
+	public void getCateListTest1() {
+		Criteria cri = new Criteria();
+		
+		String type = "TC";
+		String keyword = "테스트";
+		// String type = "AC";
+		// String keyword = "폴";
+		
+		cri.setType(type);
+		cri.setKeyword(keyword);
+		// cri.setAuthorArr(mapper.getAuthorIdList(keyword));
+		
+		String[] cateList = mapper.getCateList(cri);
+		for (String codeNum : cateList) {
+			System.out.println("codeNum ::::: " + codeNum);
+		}
+	}
+	*/
+	
+	// 카테고리 정보 얻기
+	@Test
+	public void getCateInfoTest1() {
+		Criteria cri = new Criteria();
+		
+		String type = "TC";
+		String keyword = "테스트";
+		String cateCode = "107003";
+		
+		cri.setType(type);
+		cri.setKeyword(keyword);
+		cri.setCateCode(cateCode);
+		
+		System.out.println(mapper.getCateInfo(cri));
+	}
 }
