@@ -37,7 +37,7 @@
 						마이페이지
 					</li>
 					<li>
-						장바구니
+						<a href="/cart/${member.memberId}">장바구니</a>
 					</li>
 				</c:if>
 				<li>
@@ -118,16 +118,19 @@
 							[<fmt:formatNumber value="${goodsInfo.bookDiscount * 100}" pattern="###" />%
 							<fmt:formatNumber value="${goodsInfo.bookPrice * goodsInfo.bookDiscount}" pattern="#,### 원" /> 할인]
 						</div>
+						<div>
+							적립 포인트 : <span class="point_span"></span>원
+						</div>
 					</div>
 					<div class="line">
 					</div>
 					<div class="button">
 						<div class="button_quantity">
 							주문수량
-							<input type="text" value="1">
+							<input type="text" class="quantity_input" value="1">
 							<span>
-								<button>+</button>
-								<button>-</button>
+								<button class="plus_btn">+</button>
+								<button class="minus_btn">-</button>
 							</span>
 						</div>
 						<div class="button_set">
@@ -220,7 +223,59 @@
 		
 		$(".publiYear").html(publiYear);
 		
+		// 포인트 정보
+		let salePrice = "${goodsInfo.bookPrice * (1 - goodsInfo.bookDiscount)}";
+		let point = salePrice * 0.05;
+		point = Math.floor(point);
+		
+		$(".point_span").text(point);
+		
 	});
+	
+	// 수량 버튼 조작
+	let quantity = $(".quantity_input").val();
+	$(".plus_btn").on("click", function(){
+		$(".quantity_input").val(++quantity);
+	});
+	
+	$(".minus_btn").on("click", function(){
+		if (quantity > 1){
+			$(".quantity_input").val(--quantity);
+		}
+	});
+	
+	// 서버로 전송할 장바구니 데이터
+	let form = {
+			memberId : '${member.memberId}',
+			bookId : '${goodsInfo.bookId}',
+			bookCount : ''
+	}
+	
+	// 장바구니 추가 버튼
+	$(".btn_cart").on("click", function(e){
+		form.bookCount = $(".quantity_input").val();
+		
+		$.ajax({
+			url: '/cart/add',
+			type: 'POST',
+			data: form,
+			success: function(result){
+				cartAlert(result);
+			}
+		})	
+	});
+	
+	function cartAlert(result){
+		if (result == '0'){
+			alert("장바구니에 추가하지 못하였습니다.");
+		} else if (result == '1'){
+			alert("장바구니에 추가되었습니다.");
+		} else if (result == '2'){
+			alert("장바구니에 이미 추가되어 있습니다.");
+		} else if (result == '5'){
+			alert("로그인이 필요합니다.");
+		}
+	}
 </Script>
 
 </body>

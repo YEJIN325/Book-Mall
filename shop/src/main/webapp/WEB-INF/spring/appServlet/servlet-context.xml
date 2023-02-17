@@ -30,9 +30,16 @@
 			<mapping path="/member/login.do"></mapping>
 			<beans:bean id="LoginInterceptor" class="com.javalec.interceptor.LoginInterceptor"></beans:bean>
 		</interceptor>
+		
 		<interceptor>
 			<mapping path="/admin/**"></mapping>
 			<beans:bean id="AdminInterceptor" class="com.javalec.interceptor.AdminInterceptor"></beans:bean>
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/cart/**" />
+			<exclude-mapping path="/cart/add" />
+			<beans:bean id="CartInterceptor" class="com.javalec.interceptor.CartInterceptor"></beans:bean>
 		</interceptor>
 	</interceptors>
 	
