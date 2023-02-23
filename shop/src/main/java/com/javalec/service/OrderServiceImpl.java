@@ -18,6 +18,7 @@ import com.javalec.model.AttachImageVO;
 import com.javalec.model.BookVO;
 import com.javalec.model.CartDTO;
 import com.javalec.model.MemberVO;
+import com.javalec.model.OrderCancelDTO;
 import com.javalec.model.OrderDTO;
 import com.javalec.model.OrderItemDTO;
 import com.javalec.model.OrderPageItemDTO;
@@ -115,6 +116,46 @@ public class OrderServiceImpl implements OrderService {
 			dto.setBookId(oit.getBookId());
 			
 			cartMapper.deleteOrderCart(dto);
+		}
+	}
+	
+	// 주문 취소
+	@Override
+	@Transactional
+	public void orderCancel(OrderCancelDTO dto) {
+		
+		// 회원, 주문, 주문 상품 정보 가져오기
+		MemberVO member = memberMapper.getMemberInfo(dto.getMemberId());
+		
+		List<OrderItemDTO> ords = orderMapper.getOrderItemInfo(dto.getOrderId());
+		for (OrderItemDTO ord : ords) {
+			ord.initSaleTotal();
+			System.out.println("주문 취소 상품 정보 : " + ord);
+		}
+		
+		OrderDTO order = orderMapper.getOrder(dto.getOrderId());
+		order.setOrders(ords);
+		order.getOrderPriceInfo();
+		
+		// 주문 상품 취소
+		orderMapper.orderCancel(dto.getOrderId());
+		
+		// 돈, 포인트, 재고 수정
+		int calMoney = member.getMoney();
+		calMoney += order.getOrderFinalSalePrice();
+		member.setMoney(calMoney);
+		
+		int calPoint = member.getPoint();
+		calPoint = calPoint + order.getUsePoint() - order.getOrderSavePoint();
+		member.setPoint(calPoint);
+		
+		orderMapper.deductMoney(member);
+		
+		for (OrderItemDTO ord : order.getOrders()) {
+			BookVO book = bookMapper.getGoodsInfo(ord.getBookId());
+			
+			book.setBookStock(book.getBookStock() + ord.getBookCount());
+			orderMapper.deductStock(book);
 		}
 	}
 }

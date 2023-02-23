@@ -6,6 +6,7 @@ import com.javalec.model.AttachImageVO;
 import com.javalec.model.BookVO;
 import com.javalec.model.CateVO;
 import com.javalec.model.Criteria;
+import com.javalec.model.OrderDTO;
 
 public interface AdminService {
 	// 상품 등록
@@ -31,4 +32,12 @@ public interface AdminService {
 	
 	// 지정 상품 이미지 정보 얻기
 	public List<AttachImageVO> getAttachInfo(int bookId);
+	
+	
+	// 주문 상품 리스트
+	public List<OrderDTO> getOrderList(Criteria cri);
+	
+	// 주문 총 갯수
+	public int getOrderTotal(Criteria cri);
+	
 }

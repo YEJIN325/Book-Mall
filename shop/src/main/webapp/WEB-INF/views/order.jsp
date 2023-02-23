@@ -483,7 +483,7 @@
 		
 		// 사용 포인트
 		usePoint = $(".order_point_input").val();
-		finalTotalPrice = totalPrice - usePoint;
+		finalTotalPrice -= usePoint;
 		
 		/* 값 삽입 */
 		$(".totalPrice_span").text(totalPrice.toLocaleString());

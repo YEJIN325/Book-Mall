@@ -15,6 +15,8 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,9 +39,14 @@ import com.javalec.model.AttachImageVO;
 import com.javalec.model.AuthorVO;
 import com.javalec.model.BookVO;
 import com.javalec.model.Criteria;
+import com.javalec.model.MemberVO;
+import com.javalec.model.OrderCancelDTO;
+import com.javalec.model.OrderDTO;
 import com.javalec.model.PageDTO;
 import com.javalec.service.AdminService;
 import com.javalec.service.AuthorService;
+import com.javalec.service.MemberService;
+import com.javalec.service.OrderService;
 
 @Controller
 @RequestMapping("/admin")
@@ -53,6 +60,11 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 	
+	@Autowired
+	private OrderService orderService;
+	
+	@Autowired
+	private MemberService memberService;
 	
 	@RequestMapping(value="main", method = RequestMethod.GET)
 	public void adminMainGET() throws Exception{
@@ -352,6 +364,34 @@ public class AdminController {
 		}
 		
 		return new ResponseEntity<String>("success", HttpStatus.OK);
+	}
+	
+	
+	// 주문 현황 페이지
+	@GetMapping("/orderList")
+	public void orderListGET(Criteria cri, Model model) {
+		List<OrderDTO> list = adminService.getOrderList(cri);
+		
+		if (!list.isEmpty()) {
+			model.addAttribute("list", list);
+			model.addAttribute("pageMaker", new PageDTO(cri, adminService.getOrderTotal(cri)));
+		} else {
+			model.addAttribute("listCheck", "empty");
+		}
+		
+	}
+	
+	// 주문 삭제
+	@PostMapping("/orderCancel")
+	public String orderCancelPOST(OrderCancelDTO dto, HttpServletRequest request) {
+		
+		orderService.orderCancel(dto);
+		
+		MemberVO member = memberService.getMemberInfo(dto.getMemberId());
+		HttpSession session = request.getSession();
+		session.setAttribute("member", member);
+		
+		return "redirect:/admin/orderList?keyword=" + dto.getKeyword() + "&amount=" + dto.getAmount() + "&pageNum=" + dto.getPageNum();
 	}
 	
 }

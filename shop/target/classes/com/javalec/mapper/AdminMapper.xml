@@ -76,4 +76,23 @@
 		<select id="getAttachInfo" resultType="com.javalec.model.AttachImageVO">
 			select * from image where bookId = #{bookId}
 		</select>
+		
+		<!-- 주문 리스트 -->
+		<select id="getOrderList" resultType="com.javalec.model.OrderDTO">
+			select orderId, memberId, orderState, orderDate from mall_order
+			<if test="keyword != null">
+				where memberId like concat('%', #{keyword}, '%')
+			</if>
+			order by orderDate desc
+			limit #{skip}, #{amount}
+		</select>
+		
+		<!-- 상품 총 개수 -->
+		<select id="getOrderTotal" resultType="int">
+			select count(*) from mall_order
+			<if test="keyword != null">
+				where memberId like concat('%', #{keyword}, '%')
+			</if>
+		</select>
+		
 	</mapper>

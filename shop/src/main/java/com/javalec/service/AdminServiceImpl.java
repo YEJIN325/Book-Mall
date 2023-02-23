@@ -11,6 +11,7 @@ import com.javalec.model.AttachImageVO;
 import com.javalec.model.BookVO;
 import com.javalec.model.CateVO;
 import com.javalec.model.Criteria;
+import com.javalec.model.OrderDTO;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -96,6 +97,18 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<AttachImageVO> getAttachInfo(int bookId){
 		return adminMapper.getAttachInfo(bookId);
+	}
+	
+	// 주문 상품 리스트
+	@Override
+	public List<OrderDTO> getOrderList(Criteria cri) {
+		return adminMapper.getOrderList(cri);
+	}
+	
+	// 주문 총 갯수
+	@Override
+	public int getOrderTotal(Criteria cri) {
+		return adminMapper.getOrderTotal(cri);
 	}
 	
 }
