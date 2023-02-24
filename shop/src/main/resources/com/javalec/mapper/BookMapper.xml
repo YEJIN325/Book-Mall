@@ -117,4 +117,10 @@
 			left outer join book_cate c on a.cateCode = c.cateCode
 			where bookId = #{bookId}
 		</select>
+		
+		<!-- 상품 이름 얻기 -->
+		<select id="getBookName" resultType="com.javalec.model.BookVO">
+			select bookId, bookName from book
+			where bookId = #{bookId}
+		</select>
 	</mapper>

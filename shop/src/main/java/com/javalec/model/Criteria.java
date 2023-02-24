@@ -24,6 +24,9 @@ public class Criteria {
 	// 카테고리 코드
 	private String cateCode;
 	
+	// 상품 id (리뷰 기능에서 사용)
+	private int bookId;
+	
 	public Criteria(int pageNum, int amount) {
 		this.pageNum = pageNum;
 		this.amount = amount;
@@ -95,11 +98,22 @@ public class Criteria {
 	public void setCateCode(String cateCode) {
 		this.cateCode = cateCode;
 	}
+	
+	public int getBookId() {
+		return bookId;
+	}
+
+	public void setBookId(int bookId) {
+		this.bookId = bookId;
+	}
 
 	@Override
 	public String toString() {
 		return "Criteria [pageNum=" + pageNum + ", amount=" + amount + ", skip=" + skip + ", type=" + type
-				+ ", keyword=" + keyword + ", authorArr=" + Arrays.toString(authorArr) + ", cateCode=" + cateCode + "]";
+				+ ", keyword=" + keyword + ", authorArr=" + Arrays.toString(authorArr) + ", cateCode=" + cateCode
+				+ ", bookId=" + bookId + "]";
 	}
+
+	
 	
 }

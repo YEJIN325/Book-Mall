@@ -153,7 +153,26 @@
 			<div class="line">
 			</div>
 			<div class="content_bottom">
-				리뷰
+				<div class="review_subject">
+					<h2>리뷰</h2>
+				</div>
+				<c:if test="${member != null }">
+					<div class="review_button_wrap">
+						<button>리뷰 쓰기</button>
+					</div>
+				</c:if>
+				
+				<div class="review_not_div">
+				
+				</div>
+				<ul class="review_content_ul">
+					
+				</ul>
+				<div class="review_pageInfo_div">
+					<ul class="pageMaker">
+					
+					</ul>
+				</div>
 			</div>
 			
 			<!-- 주문 form -->
@@ -236,6 +255,13 @@
 		
 		$(".point_span").text(point);
 		
+		// 리뷰 리스트 출력
+		const bookId = '${goodsInfo.bookId}';
+		
+		$.getJSON("/review/list", {bookId : bookId}, function(obj){
+			makeReviewContent(obj);
+		});
+		
 	});
 	
 	// 수량 버튼 조작
@@ -289,6 +315,126 @@
 		$(".order_form").find("input[name='orders[0].bookCount']").val(bookCount);
 		$(".order_form").submit();
 	});
+	
+	// 리뷰 쓰기
+	$(".review_button_wrap").on("click", function(e){
+		e.preventDefault();
+		
+		const memberId = '${member.memberId}';
+		const bookId = '${goodsInfo.bookId}';
+		
+		$.ajax({
+			data : {
+				bookId : bookId,
+				memberId : memberId
+			},
+			url : '/review/check',
+			type : 'POST',
+			success : function(result){
+				if (result === '1'){
+					alert("이미 등록된 리뷰가 존재합니다.");
+				} else if (result === '0'){
+					let popUrl = "/reviewEnroll/" + memberId + "?bookId=" + bookId;
+					let popOption = "width=490px, height=490px, top=300px, left=300px, scrollbars=yes";
+					
+					window.open(popUrl, "리뷰 쓰기", popOption);
+				}
+			}
+		});
+	});
+	
+	// 리뷰 페이지 정보
+	const cri = {
+			bookId : '${goodsInfo.bookId}',
+			pageNum : 1,
+			amount : 10
+	}
+	
+	// 리뷰 페이지 이동 버튼 동작
+	$(document).on("click", '.pageMaker_btn a', function(e){
+		e.preventDefault();
+		
+		let page = $(this).attr("href");
+		cri.pageNum = page;
+		
+		reviewListInit();
+	});
+	
+	// 리뷰 데이터 서버 요청 및 리뷰 동적 생성 메서드
+	let reviewListInit = function(){
+		$.getJSON("/review/list", cri, function(obj){
+			makeReviewContent(obj);
+		});
+	}
+	
+	// 리뷰 동적 생성 메서드
+	function makeReviewContent(obj){
+		if (obj.list.length === 0){
+			$('.review_not_div').html('<span>리뷰가 없습니다.</span>');
+			$(".review_content_ul").html('');
+			$('.pageMaker').html('');
+		} else {
+			$(".review_not_div").html('');
+			const list = obj.list;
+			const pinfo = obj.pageInfo;
+			const userId = '${member.memberId}';
+			
+			let review_list = '';
+			$(list).each(function(i, obj){
+				review_list += '<li>';
+				review_list += '<div class="comment_wrap">';
+				review_list += '<div class="review_top">';
+				// 아이디
+				review_list += '<span class="id_span">' + obj.memberId + '</span>';
+				// 날짜
+				review_list += '<span class="date_span">' + obj.regDate + '</span>';
+				// 평점
+				review_list += '<span class="rating_span"> 평점 : <span class="rating_value_span">' + obj.rating + '</span>점</span>';
+				
+				if (obj.memberId === userId){
+					review_list += '<a class="update_review_btn" href="' + obj.reviewId + '">수정</a><a class="delete_review_btn" href="' + obj.reviewId + '">삭제</a>';
+				}
+				
+				review_list += '</div>';
+				review_list += '<div class="review_bottom">';
+				review_list += '<div class="review_bottom_txt">' + obj.content + '</div>';
+				review_list += '</div>';
+				review_list += '</div>';
+				review_list += '</li>';
+			});
+			
+			$(".review_content_ul").html(review_list);
+			
+			// 페이지 버튼
+			let review_pageMaker = '';
+			
+			if (pinfo.prev){
+				let prev_num = pinfo.pageStart - 1;
+				review_pageMaker += '<li class="pageMaker_btn prev">';
+				review_pageMaker += '<a href="' + prev_num + '">이전</a>';
+				review_pageMaker += '</li>';
+			}
+			
+			for (let i = pinfo.pageStart; i < pinfo.pageEnd + 1; i++){
+				review_pageMaker += '<li class="pageMaker_btn ';
+				if (pinfo.cri.pageNum === i){
+					review_pageMaker += 'active';
+				}
+				review_pageMaker += '">';
+				review_pageMaker += '<a href="' + i + '">' + i + '</a>';
+				review_pageMaker += '</li>';
+			}
+			
+			if (pinfo.next){
+				let next_num = pinfo.pageEnd + 1;
+				review_pageMaker += '<li class="pageMaker_btn next">';
+				review_pageMaker += '<a href="' + next_num + '">다음</a>';
+				review_pageMaker += '</li>';
+			}
+			
+			$(".pageMaker").html(review_pageMaker);
+		}
+	}
 </script>
 
 </body>

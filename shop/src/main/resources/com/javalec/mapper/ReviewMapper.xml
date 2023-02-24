@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="com.javalec.mapper.ReviewMapper">
+		
+		<!-- 리뷰 등록 -->
+		<insert id="enrollReview">
+			insert into review(bookId, memberId, content, rating) values (#{bookId}, #{memberId}, #{content}, #{rating})
+		</insert>
+		
+		<!-- 리뷰 존재 체크 -->
+		<select id="checkReview" resultType="integer">
+			select reviewId from review
+			where memberId = #{memberId} and bookId = #{bookId}
+		</select>
+		
+		<!-- 리뷰 페이징 -->
+		<select id="getReviewList" resultType="com.javalec.model.ReviewDTO">
+			select reviewId, bookId, memberId, content, rating, regDate from review
+			where bookId = #{bookId}
+			order by regDate desc
+			limit #{skip}, #{amount}
+		</select>
+		
+		<!-- 리뷰 총 개수 -->
+		<select id="getReviewTotal" resultType="int">
+			select count(*) from review
+			where bookId = #{bookId}
+		</select>
+	</mapper>
