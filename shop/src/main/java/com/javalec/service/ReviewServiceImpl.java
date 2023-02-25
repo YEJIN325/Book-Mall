@@ -44,4 +44,25 @@ public class ReviewServiceImpl implements ReviewService {
 		
 		return dto;
 	}
+	
+	// 리뷰 수정
+	@Override
+	public int updateReview(ReviewDTO review) {
+		int result = reviewMapper.updateReview(review);
+		return result;
+	}
+	
+	// 리뷰 한 개 정보
+	@Override
+	public ReviewDTO getUpdateReview(int reviewId) {
+		return reviewMapper.getUpdateReview(reviewId);
+	}
+	
+	// 리뷰 삭제
+	@Override
+	public int deleteReview(ReviewDTO review) {
+		int result = reviewMapper.deleteReview(review.getReviewId());
+		
+		return result;
+	}
 }

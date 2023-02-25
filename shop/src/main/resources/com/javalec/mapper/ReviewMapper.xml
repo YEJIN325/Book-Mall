@@ -28,4 +28,23 @@
 			select count(*) from review
 			where bookId = #{bookId}
 		</select>
+		
+		<!-- 리뷰 수정 -->
+		<update id="updateReview">
+			update review set content = #{content}, rating = #{rating}
+			where reviewId = #{reviewId}
+		</update>
+		
+		<!-- 리뷰 한 개 정보 -->
+		<select id="getUpdateReview" resultType="com.javalec.model.ReviewDTO">
+			select * from review
+			where reviewId = #{reviewId}
+		</select>
+		
+		<!-- 리뷰 삭제 -->
+		<delete id="deleteReview">
+			delete from review
+			where reviewId = #{reviewId}
+		</delete>
+		
 	</mapper>

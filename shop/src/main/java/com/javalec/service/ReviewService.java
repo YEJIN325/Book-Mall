@@ -15,4 +15,13 @@ public interface ReviewService {
 	// 리뷰 페이징
 	public ReviewPageDTO reviewList(Criteria cri);
 	
+	// 리뷰 수정
+	public int updateReview(ReviewDTO review);
+	
+	// 리뷰 한 개 정보
+	public ReviewDTO getUpdateReview(int reviewId);
+	
+	// 리뷰 삭제
+	public int deleteReview(ReviewDTO review);
+	
 }

@@ -367,6 +367,36 @@
 		});
 	}
 	
+	// 리뷰 수정 버튼
+	$(document).on("click", '.update_review_btn', function(e){
+		e.preventDefault();
+		let reviewId = $(this).attr("href");
+		let popUrl = "/reviewUpdate?reviewId=" + reviewId + "&boookId=" + '${goodsInfo.bookId}' + "&memberId=" + "${member.memberId}";
+		let popOption = "width=490px, height=490px, top=300px, left=300px, scrollbars=yes";
+		
+		window.open(popUrl, "리뷰 수정", popOption);
+	});
+	
+	// 리뷰 삭제 버튼
+	$(document).on("click", '.delete_review_btn', function(e){
+		e.preventDefault();
+		
+		let reviewId = $(this).attr("href");
+		
+		$.ajax({
+			data : {
+				reviewId : reviewId,
+				bookId : '${goodsInfo.bookId}'
+			},
+			url : '/review/delete',
+			type : 'POST',
+			success : function(result){
+				reviewListInit();
+				alert("삭제가 완료되었습니다.");
+			}
+		});
+	});
+	
 	// 리뷰 동적 생성 메서드
 	function makeReviewContent(obj){
 		if (obj.list.length === 0){

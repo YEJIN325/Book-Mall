@@ -18,4 +18,13 @@ public interface ReviewMapper {
 	// 리뷰 총 개수
 	public int getReviewTotal(int bookId);
 	
+	// 리뷰 수정
+	public int updateReview(ReviewDTO review);
+	
+	// 리뷰 한 개 정보
+	public ReviewDTO getUpdateReview(int reviewId);
+	
+	// 리뷰 삭제
+	public int deleteReview(int reviewId);
+	
 }

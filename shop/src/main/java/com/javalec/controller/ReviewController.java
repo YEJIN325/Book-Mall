@@ -37,4 +37,16 @@ public class ReviewController {
 		return reviewService.reviewList(cri);
 	}
 	
+	// 리뷰 수정
+	@PostMapping("/update")
+	public void reviewModifyPOST(ReviewDTO review) {
+		reviewService.updateReview(review);
+	}
+	
+	// 리뷰 삭제
+	@PostMapping("/delete")
+	public void reviewDeletePOST(ReviewDTO review) {
+		reviewService.deleteReview(review);
+	}
+	
 }

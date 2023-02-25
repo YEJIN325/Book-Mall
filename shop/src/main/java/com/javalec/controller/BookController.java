@@ -24,8 +24,10 @@ import com.javalec.model.AttachImageVO;
 import com.javalec.model.BookVO;
 import com.javalec.model.Criteria;
 import com.javalec.model.PageDTO;
+import com.javalec.model.ReviewDTO;
 import com.javalec.service.AttachService;
 import com.javalec.service.BookService;
+import com.javalec.service.ReviewService;
 
 
 @Controller
@@ -38,6 +40,9 @@ public class BookController {
 	
 	@Autowired
 	private BookService bookService;
+	
+	@Autowired
+	private ReviewService reviewService;
 	
 	// 메인 페이지 이동
 	@RequestMapping(value="/main", method=RequestMethod.GET)
@@ -116,5 +121,16 @@ public class BookController {
 		model.addAttribute("memberId", memberId);
 		
 		return "/reviewEnroll";
+	}
+	
+	// 리뷰 수정 팝업창
+	@GetMapping("/reviewUpdate")
+	public String reviewUpdateWindowGET(ReviewDTO dto, Model model) {
+		BookVO book = bookService.getBookName(dto.getBookId());
+		model.addAttribute("bookInfo", book);
+		model.addAttribute("reviewInfo", reviewService.getUpdateReview(dto.getReviewId()));
+		model.addAttribute("memberId", dto.getMemberId());
+		
+		return "/reviewUpdate";
 	}
 }
