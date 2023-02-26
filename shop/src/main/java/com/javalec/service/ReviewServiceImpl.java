@@ -8,6 +8,7 @@ import com.javalec.model.Criteria;
 import com.javalec.model.PageDTO;
 import com.javalec.model.ReviewDTO;
 import com.javalec.model.ReviewPageDTO;
+import com.javalec.model.UpdateReviewDTO;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -19,6 +20,7 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public int enrollReview(ReviewDTO review) {
 		int result = reviewMapper.enrollReview(review);
+		setRating(review.getBookId());
 		return result;
 	}
 	
@@ -49,6 +51,7 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public int updateReview(ReviewDTO review) {
 		int result = reviewMapper.updateReview(review);
+		setRating(review.getBookId());
 		return result;
 	}
 	
@@ -62,7 +65,25 @@ public class ReviewServiceImpl implements ReviewService {
 	@Override
 	public int deleteReview(ReviewDTO review) {
 		int result = reviewMapper.deleteReview(review.getReviewId());
-		
+		setRating(review.getBookId());
 		return result;
+	}
+	
+	// 평점 계산
+	public void setRating(int bookId) {
+		Double ratingAvg = reviewMapper.getRatingAverage(bookId);
+		
+		if (ratingAvg == null) {
+			ratingAvg = 0.0;
+		}
+		
+		ratingAvg = (double)(Math.round(ratingAvg*10));
+		ratingAvg = ratingAvg / 10;
+		
+		UpdateReviewDTO urd = new UpdateReviewDTO();
+		urd.setBookId(bookId);
+		urd.setRatingAvg(ratingAvg);
+		
+		reviewMapper.updateRating(urd);
 	}
 }

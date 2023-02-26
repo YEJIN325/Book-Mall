@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.javalec.model.Criteria;
 import com.javalec.model.ReviewDTO;
+import com.javalec.model.UpdateReviewDTO;
 
 public interface ReviewMapper {
 	// 리뷰 등록
@@ -26,5 +27,11 @@ public interface ReviewMapper {
 	
 	// 리뷰 삭제
 	public int deleteReview(int reviewId);
+	
+	// 평점 평균 구하기
+	public Double getRatingAverage(int bookId);
+	
+	// 평점 평균 반영하기
+	public int updateRating(UpdateReviewDTO dto);
 	
 }

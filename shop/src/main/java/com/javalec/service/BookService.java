@@ -6,6 +6,7 @@ import com.javalec.model.BookVO;
 import com.javalec.model.CateFilterVO;
 import com.javalec.model.CateVO;
 import com.javalec.model.Criteria;
+import com.javalec.model.SelectDTO;
 
 public interface BookService {
 	
@@ -29,5 +30,8 @@ public interface BookService {
 	
 	// 상품 이름 얻기
 	public BookVO getBookName(int bookId);
+	
+	// 평점 순 상품 정보
+	public List<SelectDTO> likeSelect();
 	
 }

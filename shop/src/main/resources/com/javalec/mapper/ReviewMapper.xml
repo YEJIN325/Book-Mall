@@ -47,4 +47,16 @@
 			where reviewId = #{reviewId}
 		</delete>
 		
+		<!-- 평점 평균 구하기 -->
+		<select id="getRatingAverage" resultType="double">
+			select avg(rating) from review
+			where bookId = #{bookId}
+		</select>
+		
+		<!-- 평점 평균 반영 -->
+		<update id="updateRating">
+			update book set ratingAvg = #{ratingAvg}
+			where bookId = #{bookId} 
+		</update>
+		
 	</mapper>

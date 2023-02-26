@@ -51,6 +51,7 @@ public class BookController {
 		
 		model.addAttribute("cate1", bookService.getDomCateCode());
 		model.addAttribute("cate2", bookService.getAbCateCode());
+		model.addAttribute("ls", bookService.likeSelect());
 
 	}
 	
@@ -133,4 +134,5 @@ public class BookController {
 		
 		return "/reviewUpdate";
 	}
+	
 }

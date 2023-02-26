@@ -14,6 +14,7 @@ import com.javalec.model.BookVO;
 import com.javalec.model.CateFilterVO;
 import com.javalec.model.CateVO;
 import com.javalec.model.Criteria;
+import com.javalec.model.SelectDTO;
 
 @Service
 public class BookServiceImpl implements BookService {
@@ -121,4 +122,17 @@ public class BookServiceImpl implements BookService {
 		return bookMapper.getBookName(bookId);
 	}
 	
+	// 평점 순 상품 정보
+	@Override
+	public List<SelectDTO> likeSelect(){
+		List<SelectDTO> list = bookMapper.likeSelect();
+		// 이미지 추가
+		list.forEach(dto -> {
+			int bookId = dto.getBookId();
+			List<AttachImageVO> imageList = attachMapper.getAttachList(bookId);
+			dto.setImageList(imageList);
+		});
+		
+		return list;
+	}
 }

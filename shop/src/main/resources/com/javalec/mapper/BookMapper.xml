@@ -123,4 +123,11 @@
 			select bookId, bookName from book
 			where bookId = #{bookId}
 		</select>
+		
+		<!-- 평점 순 상품 정보 -->
+		<select id="likeSelect" resultType="com.javalec.model.SelectDTO">
+			select bookId, bookName, ratingAvg, (select cateName from book_cate where book.cateCode = book_cate.cateCode) as cateName from book
+			order by ratingAvg desc limit 8
+		</select>
+		
 	</mapper>
